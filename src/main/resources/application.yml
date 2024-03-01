@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+  data:
+    mongodb:
+      uri: mongodb+srv://root:root@cluster0.urvydqm.mongodb.net/?retryWrites=true&w=majority
+      database: aws
+
+jwt:
+  signingKey: very_secret_key_that_very_long_and_very_very_trustful
