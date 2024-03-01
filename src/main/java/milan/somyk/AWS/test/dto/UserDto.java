@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import milan.somyk.AWS.test.enums.Role;
 
 @Data
 @Builder

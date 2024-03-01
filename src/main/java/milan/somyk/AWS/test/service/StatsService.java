@@ -4,18 +4,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import milan.somyk.AWS.test.document.StatsByAsin;
 import milan.somyk.AWS.test.document.StatsByDate;
-import milan.somyk.AWS.test.dto.*;
+import milan.somyk.AWS.test.dto.SummaryByAsinDto;
+import milan.somyk.AWS.test.dto.SummaryByDateDto;
+import milan.somyk.AWS.test.dto.SummaryStatsByAsin;
+import milan.somyk.AWS.test.dto.SummaryStatsByDate;
 import milan.somyk.AWS.test.dto.response.ResponseContainer;
 import milan.somyk.AWS.test.mapper.SummaryMapper;
 import milan.somyk.AWS.test.repository.StatsByAsinRepository;
 import milan.somyk.AWS.test.repository.StatsByDateRepository;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,9 +35,9 @@ public class StatsService {
         ResponseContainer responseContainer = new ResponseContainer();
         Cache cache = cacheManager.getCache("statsByDate");
         if(!Objects.isNull(cache)){
-            StatsByDate statsByDate1 = new StatsByDate();
+            StatsByDate statsByDate1;
             if(!Objects.isNull(cache.get(date))){
-                statsByDate1 = (StatsByDate) cache.get(date).get();
+                statsByDate1 = (StatsByDate) Objects.requireNonNull(cache.get(date)).get();
                 if(!Objects.isNull(statsByDate1)){
                     return responseContainer.setSuccessResult(statsByDate1);
                 }
@@ -56,8 +59,27 @@ public class StatsService {
     }
 
     public ResponseContainer getStatsByDates(String startDate, String endDate) throws InterruptedException {
-        Thread.sleep(2000);
         ResponseContainer responseContainer = new ResponseContainer();
+        Cache cache = cacheManager.getCache("statsByDate");
+        LocalDate startLocalDate = LocalDate.parse(startDate);
+        LocalDate endLocalDate = LocalDate.parse(endDate);
+        List<LocalDate> list = startLocalDate.datesUntil(endLocalDate.plusDays(1)).toList();
+        List<StatsByDate> statsList = new ArrayList<>();
+        if(!Objects.isNull(cache)){
+            StatsByDate stats;
+            for(LocalDate item : list){
+                if(!Objects.isNull(cache.get(item.toString()))){
+                    stats = (StatsByDate) Objects.requireNonNull(cache.get(item.toString())).get();
+                    if(!Objects.isNull(stats)){
+                        statsList.add(stats);
+                    }
+                }
+            }
+            if(!statsList.isEmpty()){
+                return responseContainer.setSuccessResult(statsList);
+            }
+        }
+        Thread.sleep(2000);
         List<StatsByDate> byDateBetween;
         if (!StringUtils.hasText(startDate)) {
             log.error("no startDate");
@@ -67,16 +89,10 @@ public class StatsService {
             log.error("no endDate");
             return responseContainer.setErrorMessageAndStatusCode("no endDate", HttpStatus.BAD_REQUEST.value());
         }
-        char[] startChars = startDate.toCharArray();
-        int c = startChars[startChars.length - 1];
-        startChars[startChars.length - 1] = Integer.toString(Character.getNumericValue(c) - 1).toCharArray()[0];
-        String searchStart = new String(startChars);
-        char[] endChars = endDate.toCharArray();
-        int b = endChars[endChars.length - 1];
-        endChars[endChars.length - 1] = Integer.toString(Character.getNumericValue(b) + 1).toCharArray()[0];
-        String searchEnd = new String(endChars);
+
+
         try {
-            byDateBetween = statsByDateRepository.findByDateBetween(searchStart, searchEnd);
+            byDateBetween = statsByDateRepository.findByDateBetween(startLocalDate.minusDays(1).toString(), endLocalDate.plusDays(1).toString());
         } catch (Exception e) {
             log.error(e.getMessage());
             return responseContainer.setErrorMessageAndStatusCode(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -88,9 +104,9 @@ public class StatsService {
         ResponseContainer responseContainer = new ResponseContainer();
         Cache cache = cacheManager.getCache("statsByAsin");
         if(!Objects.isNull(cache)){
-            StatsByAsin stats = new StatsByAsin();
+            StatsByAsin stats;
             if(!Objects.isNull(cache.get(asin))){
-                stats = (StatsByAsin) cache.get(asin).get();
+                stats = (StatsByAsin) Objects.requireNonNull(cache.get(asin)).get();
                 if(!Objects.isNull(stats)){
                     return responseContainer.setSuccessResult(stats);
                 }
@@ -116,10 +132,10 @@ public class StatsService {
         Cache cache = cacheManager.getCache("statsByAsin");
         List<StatsByAsin> statsList = new ArrayList<>();
         if(!Objects.isNull(cache)){
-            StatsByAsin stats = new StatsByAsin();
+            StatsByAsin stats;
             for(String item : asinList){
                 if(!Objects.isNull(cache.get(item))){
-                    stats = (StatsByAsin) cache.get(item).get();
+                    stats = (StatsByAsin) Objects.requireNonNull(cache.get(item)).get();
                     if(!Objects.isNull(stats)){
                         statsList.add(stats);
                     }
@@ -145,9 +161,9 @@ public class StatsService {
         ResponseContainer responseContainer = new ResponseContainer();
         if(type.equals("asin")){
             if(!Objects.isNull(cache)){
-                SummaryByAsinDto summaryByAsinDto = new SummaryByAsinDto();
+                SummaryByAsinDto summaryByAsinDto;
                 if(!Objects.isNull(cache.get(type))){
-                    summaryByAsinDto = (SummaryByAsinDto) cache.get(type).get();
+                    summaryByAsinDto = (SummaryByAsinDto) Objects.requireNonNull(cache.get(type)).get();
                     if(!Objects.isNull(summaryByAsinDto)){
                         return responseContainer.setSuccessResult(summaryByAsinDto);
                     }
@@ -156,9 +172,9 @@ public class StatsService {
         }
         if(type.equals("date")){
             if(!Objects.isNull(cache)){
-                SummaryByDateDto summary = new SummaryByDateDto();
+                SummaryByDateDto summary;
                 if(!Objects.isNull(cache.get(type))){
-                    summary = (SummaryByDateDto) cache.get(type).get();
+                    summary = (SummaryByDateDto) Objects.requireNonNull(cache.get(type)).get();
                     if(!Objects.isNull(summary)){
                         return responseContainer.setSuccessResult(summary);
                     }

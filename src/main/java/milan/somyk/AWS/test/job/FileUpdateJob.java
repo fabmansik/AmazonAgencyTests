@@ -1,20 +1,21 @@
 package milan.somyk.AWS.test.job;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import milan.somyk.AWS.test.document.StatsByAsin;
 import milan.somyk.AWS.test.document.StatsByDate;
-import milan.somyk.AWS.test.dto.*;
+import milan.somyk.AWS.test.dto.ReportFile;
+import milan.somyk.AWS.test.dto.ReportSpecification;
+import milan.somyk.AWS.test.dto.SummaryByAsinDto;
+import milan.somyk.AWS.test.dto.SummaryByDateDto;
 import milan.somyk.AWS.test.dto.response.ResponseContainer;
-import milan.somyk.AWS.test.mapper.SummaryMapper;
 import milan.somyk.AWS.test.repository.ReportSpecificationRepository;
 import milan.somyk.AWS.test.repository.StatsByAsinRepository;
 import milan.somyk.AWS.test.repository.StatsByDateRepository;
 import milan.somyk.AWS.test.service.CacheService;
 import milan.somyk.AWS.test.service.JsonFileService;
 import milan.somyk.AWS.test.service.StatsService;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -31,8 +32,8 @@ public class FileUpdateJob {
     private final StatsByAsinRepository statsByAsinRepository;
     private final ReportSpecificationRepository reportSpecificationRepository;
     private final StatsService statsService;
-    private final SummaryMapper summaryMapper;
-    @Scheduled(cron = "0/7 * * * * *")
+    @PostConstruct
+    @Scheduled(cron = "0 0/5 * * * *")
     public void process() throws InterruptedException {
         ResponseContainer responseContainer = jsonFileService.updateFile();
         if(responseContainer.isError()){
