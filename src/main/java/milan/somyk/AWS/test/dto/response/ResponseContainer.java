@@ -20,16 +20,7 @@ public class ResponseContainer {
         this.statusCode = statusCode;
         return this;
     }
-    public ResponseContainer setResultAndStatusCode(Object result, int statusCode){
-        this.result = result;
-        this.statusCode = statusCode;
-        return this;
-    }
 
-    public void setErrorMessage(String errorMessage) {
-        this.isError = true;
-        this.errorMessage = errorMessage;
-    }
     public ResponseContainer setSuccessResult(Object result){
         this.result = result;
         this.statusCode = HttpStatus.OK.value();
@@ -40,10 +31,6 @@ public class ResponseContainer {
         this.statusCode = HttpStatus.CREATED.value();
     }
 
-    public ResponseContainer(Object result, int statusCode){
-        this.statusCode = statusCode;
-        this.result = result;
-    }
 }
 
 

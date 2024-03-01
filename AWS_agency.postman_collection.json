@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"lol\",\r\n    \"password\": \"lol123\"\r\n}",
+					"raw": "{\r\n    \"username\": \"bob\",\r\n    \"password\": \"bob123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -40,7 +40,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"lol\",\r\n    \"password\": \"lol123\"\r\n}",
+					"raw": "{\r\n    \"username\": \"bob\",\r\n    \"password\": \"bob123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -67,7 +67,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"refresh\": \"eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInN1YiI6ImxvbCIsImlhdCI6MTcwOTEyNTk3OSwiZXhwIjoxNzA5MTMzMTc5fQ.wCQgshRJsJj36lP9r0mOA8HZkG5aAJySKbes-tL8jNk\"\r\n}",
+					"raw": "{\r\n    \"refresh\": \"eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInN1YiI6InRlZCIsImlhdCI6MTcwOTMyOTYzNiwiZXhwIjoxNzA5MzM2ODM2fQ.mjtovOcndpQ3F0Cpu5v-bUYubcxIsLjLXpccPfBf-Cg\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -90,40 +90,181 @@
 		{
 			"name": "statsByDate",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInN1YiI6ImJvYiIsImlhdCI6MTcwOTMzMDE1NywiZXhwIjoxNzA5MzM3MzU3fQ.qWAp2ipaUvdezbNwYb9CSk0-vY40Sn7YGQNM2qadhso",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/stats?date=2024-02-22",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"stats"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2024-02-22"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "statsByDates",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInN1YiI6ImJvYiIsImlhdCI6MTcwOTMzMDE1NywiZXhwIjoxNzA5MzM3MzU3fQ.qWAp2ipaUvdezbNwYb9CSk0-vY40Sn7YGQNM2qadhso",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/stats?startDate=2024-02-16&endDate=2024-02-18",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"stats"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2024-02-16"
+						},
+						{
+							"key": "endDate",
+							"value": "2024-02-18"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "statsByAsin",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInN1YiI6ImJvYiIsImlhdCI6MTcwOTMzMDE1NywiZXhwIjoxNzA5MzM3MzU3fQ.qWAp2ipaUvdezbNwYb9CSk0-vY40Sn7YGQNM2qadhso",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/stats?asin=B07JWCZKSJ",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"stats"
+					],
+					"query": [
+						{
+							"key": "asin",
+							"value": "B07JWCZKSJ"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "statsByAsinList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInN1YiI6ImJvYiIsImlhdCI6MTcwOTMzMDE1NywiZXhwIjoxNzA5MzM3MzU3fQ.qWAp2ipaUvdezbNwYb9CSk0-vY40Sn7YGQNM2qadhso",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\"B07JWCZKSJ\",\"B0B14B89VH\", \"B0BHWD3DW6\"]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/stats",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"stats"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "sumStats",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInN1YiI6ImJvYiIsImlhdCI6MTcwOTMzMDE1NywiZXhwIjoxNzA5MzM3MzU3fQ.qWAp2ipaUvdezbNwYb9CSk0-vY40Sn7YGQNM2qadhso",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/stats/sum?type=date",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"stats",
+						"sum"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "date"
+						}
+					]
+				}
 			},
 			"response": []
 		}

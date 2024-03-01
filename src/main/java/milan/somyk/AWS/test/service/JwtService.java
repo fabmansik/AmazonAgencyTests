@@ -13,5 +13,4 @@ public interface JwtService {
     String generateRefreshToken(UserDetails userDetails);
     Duration extractDuration(String token);
     boolean isRefreshType(String token);
-    String extractTokenFromAuth(String auth);
 }
